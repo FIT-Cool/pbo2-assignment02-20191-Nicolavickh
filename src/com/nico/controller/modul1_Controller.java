@@ -47,18 +47,7 @@ public class modul1_Controller implements Initializable {
         i.setName(txtName.getText().trim());
         i.setPrice(Double.parseDouble(txtPrice.getText().trim()));
         i.setCategory(comboBox.getValue());
-        colCategory.setCellValueFactory(data -> {
-            item a = data.getValue();
-            return new SimpleStringProperty(a.getCategory().getName());
-        });
-        colName.setCellValueFactory(data ->{
-            item b = data.getValue();
-            return new SimpleStringProperty(b.getName());
-        });
-        colPrice.setCellValueFactory(data ->{
-            item c = data.getValue();
-            return  new SimpleDoubleProperty(c.getPrice()).asObject();
-        });
+        items.add(i);
     }
 
     public void resetButton(ActionEvent actionEvent) {
@@ -79,6 +68,18 @@ public class modul1_Controller implements Initializable {
         comboBox.setItems(categories);
         items = FXCollections.observableArrayList();
         table.setItems(items);
+        colCategory.setCellValueFactory(data -> {
+            item a = data.getValue();
+            return new SimpleStringProperty(a.getCategory().getName());
+        });
+        colName.setCellValueFactory(data ->{
+            item b = data.getValue();
+            return new SimpleStringProperty(b.getName());
+        });
+        colPrice.setCellValueFactory(data ->{
+            item c = data.getValue();
+            return  new SimpleDoubleProperty(c.getPrice()).asObject();
+        });
     }
 
     @FXML
