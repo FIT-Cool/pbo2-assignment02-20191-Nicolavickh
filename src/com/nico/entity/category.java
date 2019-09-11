@@ -1,3 +1,4 @@
+// Made by Nicolavickh Yohanes 1772016
 package com.nico.entity;
 
 public class category {

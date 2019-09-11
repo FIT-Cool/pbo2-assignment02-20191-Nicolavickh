@@ -1,3 +1,4 @@
+//Made by Nicolavickh Yohanes 1772016
 package com.nico.controller;
 
 import com.nico.entity.category;
@@ -45,15 +46,22 @@ public class modul1_Controller implements Initializable {
 
     public void saveButton(ActionEvent actionEvent) {
         Alert a = new Alert(Alert.AlertType.ERROR);
-        if (txtName.getText()==null || txtPrice.getText()==null || comboBox.getValue() == null) {
+        if (txtName.getText() == null || txtPrice.getText() == null || comboBox.getValue() == null) {
             a.setContentText("Please fill Name/Price/Category");
             a.showAndWait();
         } else {
-            item i = new item();
-            i.setName(txtName.getText().trim());
-            i.setPrice(Double.parseDouble(txtPrice.getText().trim()));
-            i.setCategory(comboBox.getValue());
-            items.add(i);
+            int count = (int) items.stream().filter(p -> p.getName().equalsIgnoreCase(txtName.getText())).count();
+            if (count >= 1) {
+                a.setContentText("Duplicate Name");
+                a.showAndWait();
+            } else {
+                item i = new item();
+                i.setName(txtName.getText().trim());
+                i.setPrice(Double.parseDouble(txtPrice.getText().trim()));
+                i.setCategory(comboBox.getValue());
+                items.add(i);
+            }
+
         }
 
     }
@@ -83,16 +91,12 @@ public class modul1_Controller implements Initializable {
         } else {
             category c = new category();
             c.setName(txtCategory.getText().trim());
-            boolean ada = false;
-            for (category i : categories) {
-                if (i.getName().equals(c.getName())) {
-                    a.setContentText("Duplicate Category Name");
-                    a.showAndWait();
-                    ada = true;
-                    break;
-                }
+            int count = (int) categories.stream().filter(p -> p.getName().equalsIgnoreCase(txtCategory.getText().trim())).count();
+            if (count >= 1) {
+                a.setContentText("Duplicate Category Name");
+                a.showAndWait();
             }
-            if (ada == false) {
+            else {
                 categories.add(c);
             }
         }
