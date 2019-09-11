@@ -19,6 +19,7 @@ public class modul1_Controller implements Initializable {
 
     private ObservableList<item> items;
     private ObservableList<category> categories;
+
     @FXML
     private MenuBar menuBar;
     @FXML
@@ -43,24 +44,60 @@ public class modul1_Controller implements Initializable {
     private TableView<item> table;
 
     public void saveButton(ActionEvent actionEvent) {
-        item i = new item();
-        i.setName(txtName.getText().trim());
-        i.setPrice(Double.parseDouble(txtPrice.getText().trim()));
-        i.setCategory(comboBox.getValue());
-        items.add(i);
+        Alert a = new Alert(Alert.AlertType.ERROR);
+        if (txtName.getText().isEmpty() || txtPrice.getText().isEmpty() || comboBox.getValue().getName().isEmpty()) {
+            a.setContentText("Please fill Name/Price/Category");
+        } else {
+            item i = new item();
+            i.setName(txtName.getText().trim());
+            i.setPrice(Double.parseDouble(txtPrice.getText().trim()));
+            i.setCategory(comboBox.getValue());
+            items.add(i);
+        }
+
     }
 
     public void resetButton(ActionEvent actionEvent) {
+        updateButton.setDisable(true);
+        saveButton.setDisable(false);
+        comboBox.setValue(null);
+        txtCategory.setText(null);
+        txtName.setText(null);
+        txtPrice.setText(null);
     }
 
     public void updateButton(ActionEvent actionEvent) {
+        item i = table.getSelectionModel().getSelectedItem();
+        i.setCategory(comboBox.getValue());
+        i.setName(txtName.getText());
+        i.setPrice(Double.parseDouble(txtPrice.getText()));
+        table.refresh();
     }
 
     public void saveCategoryButton(ActionEvent actionEvent) {
-        category c  = new category();
-        c.setName(txtCategory.getText().trim());
-        categories.add(c);
+        Alert a = new Alert(Alert.AlertType.ERROR);
+        if (txtCategory.getText().isEmpty()) {
+            a.setContentText("Please fill Category Name");
+            a.showAndWait();
+        } else {
+            category c = new category();
+            c.setName(txtCategory.getText().trim());
+            boolean ada = false;
+            for (category i : categories) {
+                if (i.getName().equals(c.getName())) {
+                    a.setContentText("Duplicate Category Name");
+                    a.showAndWait();
+                    ada = true;
+                    break;
+                }
+            }
+            if (ada == false) {
+            if (ada == false) {
+                categories.add(c);
+            }
+        }
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,13 +109,14 @@ public class modul1_Controller implements Initializable {
             item a = data.getValue();
             return new SimpleStringProperty(a.getCategory().getName());
         });
-        colName.setCellValueFactory(data ->{
+        colName.setCellValueFactory(data -> {
             item b = data.getValue();
             return new SimpleStringProperty(b.getName());
+
         });
-        colPrice.setCellValueFactory(data ->{
+        colPrice.setCellValueFactory(data -> {
             item c = data.getValue();
-            return  new SimpleDoubleProperty(c.getPrice()).asObject();
+            return new SimpleDoubleProperty(c.getPrice()).asObject();
         });
     }
 
@@ -88,5 +126,7 @@ public class modul1_Controller implements Initializable {
         txtName.setText(i.getName());
         txtPrice.setText(String.valueOf(i.getPrice()));
         comboBox.setValue(i.getCategory());
+        saveButton.setDisable(true);
+        updateButton.setDisable(false);
     }
 }
