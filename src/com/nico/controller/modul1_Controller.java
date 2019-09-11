@@ -45,8 +45,9 @@ public class modul1_Controller implements Initializable {
 
     public void saveButton(ActionEvent actionEvent) {
         Alert a = new Alert(Alert.AlertType.ERROR);
-        if (txtName.getText().isEmpty() || txtPrice.getText().isEmpty() || comboBox.getValue().getName().isEmpty()) {
+        if (txtName.getText()==null || txtPrice.getText()==null || comboBox.getValue() == null) {
             a.setContentText("Please fill Name/Price/Category");
+            a.showAndWait();
         } else {
             item i = new item();
             i.setName(txtName.getText().trim());
