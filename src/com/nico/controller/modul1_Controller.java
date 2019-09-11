@@ -92,7 +92,6 @@ public class modul1_Controller implements Initializable {
                 }
             }
             if (ada == false) {
-            if (ada == false) {
                 categories.add(c);
             }
         }
